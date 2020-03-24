@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:XFAddressBook.Views"
+             xmlns:vm="clr-namespace:XFAddressBook.ViewModels"
+             mc:Ignorable="d"
+             x:DataType="vm:MainPageViewModel"
+             x:Class="XFAddressBook.Views.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <v:GroupDictionaryToListConverter x:Key="GroupDictionaryToListConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel />
+    </ContentPage.BindingContext>
+
+    <!--
+        SelectionChangedCommand="{Binding SelectionChangedCommand, Mode=OneTime}"
+        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+        SelectedItems="{Binding NotifySelectedColors, Mode=OneWay}"
+    -->
+    <CollectionView ItemSizingStrategy="MeasureAllItems"
+                    Footer="This area is Footer."
+                    SelectionMode="None"
+                    ItemsSource="{Binding AddressGroupDict, Mode=OneTime,
+                                          Converter={StaticResource GroupDictionaryToListConverter}}"
+                    ItemTemplate="{StaticResource addressBookSelector}" >
+
+        <!-- 期待通りの動作にならない(選択項目が解除されない)
+        <CollectionView.Behaviors>
+            <v:NotSelectableItemsViewBehavior />
+        </CollectionView.Behaviors>
+        -->
+
+        <CollectionView.Header>
+            <StackLayout BackgroundColor="Gray" >
+                <Label Margin="10,3"
+                       Text="AddressBook"
+                       FontSize="Small" TextColor="White" FontAttributes="Bold" />
+            </StackLayout>
+        </CollectionView.Header>
+
+        <CollectionView.Resources>
+            <ResourceDictionary>
+                <DataTemplate x:Key="MyTitleTemplate" x:DataType="{x:Null}" >
+                    <Frame BackgroundColor="LightGray"
+                           CornerRadius="0"
+                           Margin="0"
+                           Padding="5,0,0,0" >
+                        <Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               FontAttributes="Bold"
+                               Padding="5"
+                               Text="{Binding Title, Mode=OneTime}" />
+                    </Frame>
+                </DataTemplate>
+
+                <DataTemplate x:Key="MyDataTemplate" x:DataType="{x:Null}" >
+                    <v:SelectableGrid Padding="10,3,20,3" >
+                        <!-- 単一項目の選択対応 -->
+                        <View.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="SelectSingleItem" />
+                        </View.GestureRecognizers>
+
+                        <Frame BorderColor="DarkGray" >
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="{x:Type Frame}"
+                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type v:SelectableGrid}}, Path=IsSelected}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor" Value="LightBlue"/>
+                                </DataTrigger>
+                            </Frame.Triggers>
+
+                            <StackLayout Spacing="0" >
+                                <Label Text="{Binding Name, Mode=OneTime}"
+                                       FontSize="Medium" FontAttributes="Italic" />
+                                <Label Text="{Binding Contact, Mode=OneTime}"
+                                       Padding="20,0,0,0"
+                                       FontSize="Micro" />
+                            </StackLayout>
+                        </Frame>
+                    </v:SelectableGrid>
+                </DataTemplate>
+
+                <v:AddressBookDataTemplateSelector
+                    x:Key="addressBookSelector"
+                    TitleTemplate="{StaticResource MyTitleTemplate}"
+                    DataTemplate="{StaticResource MyDataTemplate}" />
+            </ResourceDictionary>
+        </CollectionView.Resources>
+    </CollectionView>
+
+</ContentPage>
