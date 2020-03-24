@@ -10,4 +10,6 @@ Address book like iPhone on Xamarin.Forms
 
 3. アイテムのクリック時にプッシュ効果を付けたい（何も考慮しなかったらグループタイトル部も選択効果が付いてしまう）
 
+![Capture](https://github.com/hsytkm/XFAddressBook/blob/master/capture.gif)
+
 以上
