@@ -6,13 +6,13 @@
     RequestedTheme="Light">
 
     <Application.Resources >
-
-        <!-- デフォルトだとコレクション要素の左右に隙間ができるので上書き
-             XF4.4.0.??? では指定できたのに、XF4.5.0.396 では指定が効かない気がする…
-        -->
+        <!-- デフォルトだと CollectionView の ListViewItem の左右に隙間ができるのでStyleを上書き
+             XF4.4.0.??? では指定できたのに、XF4.5.0.396 では指定が効かなかった
+              ⇒ Effectで対応できた！
         <Style TargetType="ListViewItem" >
             <Setter Property="Padding" Value="0" />
         </Style>
+        -->
 
     </Application.Resources>
 </Application>

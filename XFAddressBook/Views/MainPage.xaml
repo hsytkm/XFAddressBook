@@ -30,6 +30,9 @@
                     ItemsSource="{Binding AddressGroupDict, Mode=OneTime,
                                           Converter={StaticResource GroupDictionaryToListConverter}}"
                     ItemTemplate="{StaticResource addressBookSelector}" >
+        <CollectionView.Effects>
+            <v:MyCollectionViewEffect />
+        </CollectionView.Effects>
 
         <!-- 期待通りの動作にならない(選択項目が解除されない)
         <CollectionView.Behaviors>
